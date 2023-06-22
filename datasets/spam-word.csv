@@ -1,3 +1,4 @@
+Comment,Spam
 "$$$",1
 "0%",1
 "0% risk",1
@@ -169,7 +170,6 @@
 "Click to remove mailto",1
 "Collect",1
 "Collect child support",1
-Comment,Spam
 "Compare",1
 "Compare now",1
 "Compare online",1
@@ -1075,7 +1075,7 @@ Comment,Spam
 "Your chance",1
 "You’re a winner! Won",1
 "Your income",1
-"Your income",1"
+"Your income",1
 "Yours",1
 "Your status",1
 "You will not believe your eyes",1
