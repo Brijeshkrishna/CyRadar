@@ -9,16 +9,13 @@ import tensorflow_hub as hub
 import nltk
 from nltk.corpus import stopwords
 
-nltk.download('stopwords')
-nltk.download('wordnet')
-
 import emoji
 import re
 from sklearn.pipeline import Pipeline
 
 from sklearn.model_selection import train_test_split
-
 import datetime
+from imblearn.over_sampling import RandomOverSampler
 
 # %%
 MAX_LENGTH =  50
@@ -40,6 +37,26 @@ df5 = pd.read_csv("datasets/emoji.csv",delimiter=',')
 df = pd.concat([df1,df2,df3,df4,df5],ignore_index=True)
 
 # %%
+# import seaborn as sns
+# sns.countplot(x="Spam",data=df)
+
+
+# %%
+class UpSample:
+    def fit(self, x, y=None):
+        return self
+
+    def transform(self, df):
+        ros = RandomOverSampler(random_state=73133)
+
+        x, y = ros.fit_resample(
+            df[['Comment','currency','length','spam_word','emoji','contain','email','phone',]].values
+            ,df['Spam'].values
+        )
+        df =  pd.DataFrame(x, columns=['Comment','currency','length','spam_word','emoji','contain','email','phone'])
+        df['Spam'] = y
+        return  df
+
 class ConvertData:
     def fit(self, x, y=None):
         return self
@@ -328,6 +345,7 @@ class LemmatizeText:
 
 pipe =  Pipeline([
     ("ConvertData",ConvertData()),
+    
 
     ("AddCurrencyFlag",AddCurrencyFlag()),
     ("AddSpamWordsFlag",AddSpamWordsFlag()),
@@ -342,6 +360,7 @@ pipe =  Pipeline([
     ("LemmatizeText",LemmatizeText()),
 
     ("AddLengthFlag",AddLengthFlag()),
+    ("UpSample",UpSample())
 
 
 ])
@@ -350,6 +369,7 @@ pipe =  Pipeline([
 # %%
 df = pipe.transform(df)
 df.info()
+
 
 # %%
 # import seaborn as sns
@@ -361,6 +381,7 @@ df.info()
 # sns.countplot(x="phone",data=df)
 # sns.countplot(x="length",data=df)
 
+# df
 
 # %%
 y = pd.DataFrame(df.Spam)
@@ -406,21 +427,46 @@ y_test = { "Spam" : tf.convert_to_tensor(y_test,dtype=tf.bool) }
 
 # %%
 
+# class LayerHelper(tf.keras.layers.Layer):
+#     def __init__(self, name1 ,name2 ,units1 = 8 ,units2 = 8 , dropout_rate=0.5 ):
+#         super(LayerHelper, self).__init__()
+#         self.dense1 = tf.keras.layers.Dense(units1, , name=name1)
+#         self.dropout = tf.keras.layers.Dropout(dropout_rate)
+#         self.dense2 = tf.keras.layers.Dense(units2, , name=name2 )
+
+#     def call(self, inputs):
+#         x = self.dense1(inputs)
+#         x = self.dropout(x)
+#         x = self.dense2(x)
+#         return x
+
+
+
+# class Comment(tf.keras.layers.Layer):
+#     def __init__(self):
+#         super(Comment, self).__init__()
+
+#         self.url = "https://tfhub.dev/google/nnlm-en-dim50/2"
+
+#         self.hub_layer = hub.KerasLayer(self.url, dtype=tf.string, trainable=True,name="NNLM_Hub")        
+        
+#         self.set1= LayerHelper(name1="Comment_Dense_set_1",name2="Comment_Dense_set_1_out",units1=125000,units2=2500,dropout_rate=0.2)
+#         self.set2 = LayerHelper(name1="Comment_Dense_set_2",name2="Comment_Dense_set_2_out",units1=2500,units2=1250,dropout_rate=0.3)
+#         self.set3 = LayerHelper(name1="Comment_Dense_set_3",name2="Comment_Dense_set_3_out",units1=1250,units2=MAX_LENGTH,dropout_rate=0.3)
+        
+#     def call(self, inputs):
+
+#         x = self.hub_layer(inputs)
+#         x = self.set1(x)
+#         x = self.set2(x)
+#         x = self.set3(x)
+
+#         return x
+
 
 
 
 # %%
-
-string_input = tf.keras.layers.Input(shape=[], dtype=tf.string , name="Comment")
-length_input   = tf.keras.layers.Input(shape=(1,),name="Length",dtype=tf.float32)
-currency_input = tf.keras.layers.Input(shape=(1,),name="Currency",dtype=tf.float32)
-spam_word_input = tf.keras.layers.Input(shape=(1,),name="Spam Words",dtype=tf.float32)
-emoji_input = tf.keras.layers.Input(shape=(1,),name="Emoji",dtype=tf.float32)
-contain_input = tf.keras.layers.Input(shape=(1,),name="Contain",dtype=tf.float32)
-email_input = tf.keras.layers.Input(shape=(1,),name="Email",dtype=tf.float32)
-phone_input = tf.keras.layers.Input(shape=(1,),name="Phone",dtype=tf.float32)
-
-#Comment
 
 string_input = tf.keras.layers.Input(shape=[], dtype=tf.string , name="Comment")
 length_input   = tf.keras.layers.Input(shape=(1,),name="Length",dtype=tf.float32)
@@ -526,15 +572,11 @@ concat_layer_level1_2 = tf.keras.layers.Dense(300)(concat_layer_level1_2)
 concat_layer_level1_2 = tf.keras.layers.LeakyReLU()(concat_layer_level1_2)
 
 
-
-
-
 concat_layer_level = tf.keras.layers.concatenate([concat_layer_level1_1,concat_layer_level1_2])
 sub_layer = tf.keras.layers.Dense(300,name="sub_layer")(concat_layer_level)
 sub_layer = tf.keras.layers.LeakyReLU()(sub_layer)
 
 # con  = tf.keras.layers.Dropout(rate=0.2)(sub_layer)
-
 
 # Concatenate all input branches
 concat_layer = tf.keras.layers.concatenate([s1,sub_layer ])
@@ -564,11 +606,25 @@ model.summary()
 
 #67248
 
-
-
-
 # %%
 # model.save("base.model")
+
+# %%
+# import graphviz
+
+# # Plot the model
+# # plot_model(model, to_file='team_strength_model.png', show_shapes=1, expand_nested=1,show_layer_activations=1)
+
+# # Load the graphviz object from the file
+# graph = graphviz.Source.from_file('team_strength_model.png',encoding='latin1' )
+# # # Modify the style to make the center box more prominent
+# # graph.graph['node'][0]['width'] = '2'
+# # graph.graph['node'][0]['style'] = 'filled'
+# # graph.graph['node'][0]['fillcolor'] = 'lightblue'
+
+# # Save the modified graph
+# graph.render(filename='team_strength_model_with_center_box', format='png', cleanup=True)
+
 
 # %%
 # import matplotlib.pyplot as plt
@@ -588,20 +644,24 @@ tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram
 
 
 # %%
+import gc
+class MyCustomCallback(tf.keras.callbacks.Callback):
+    def on_epoch_end(self, epoch, logs=None):
+        gc.collect()
+        tf.keras.backend.clear_session()
+
+# %%
 
 k = model.fit(X_train,
           y_train,
-          epochs=10,
-          batch_size=32,
+          epochs=2,
+          batch_size=12,
           validation_data=(X_test, y_test),
-          callbacks=[tf.keras.callbacks.EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=10),tensorboard_callback],
+          callbacks=[MyCustomCallback(),tf.keras.callbacks.EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=10),tensorboard_callback],
           verbose=1
 )
 
 
-model.save("spam-model.h5",include_optimizer=True)
-
-
 
 
 # %%
@@ -609,5 +669,105 @@ model.save("spam-model.h5",include_optimizer=True)
 
 # %%
 
+# string_input = tf.keras.layers.Input(shape=[], dtype=tf.string , name="Comment")
+# length_input   = tf.keras.layers.Input(shape=(1,),name="Length",dtype=tf.float32)
+# currency_input = tf.keras.layers.Input(shape=(1,),name="Currency",dtype=tf.float32)
+# spam_word_input = tf.keras.layers.Input(shape=(1,),name="Spam Words",dtype=tf.float32)
+# emoji_input = tf.keras.layers.Input(shape=(1,),name="Emoji",dtype=tf.float32)
+# contain_input = tf.keras.layers.Input(shape=(1,),name="Contain",dtype=tf.float32)
+# email_input = tf.keras.layers.Input(shape=(1,),name="Email",dtype=tf.float32)
+# phone_input = tf.keras.layers.Input(shape=(1,),name="Phone",dtype=tf.float32)
+
+# #Comment
+# hub_layer = hub.KerasLayer("https://tfhub.dev/google/nnlm-en-dim50/2", dtype=tf.string, trainable=True,name="NNLM_Hub")
+# embedding_layer = hub_layer(string_input)
+# s1= tf.keras.layers.Dense(5000, activation='relu'  )(embedding_layer)
+# drop1 = tf.keras.layers.Dropout(0)(s1)
+# s1= tf.keras.layers.Dense(4000, activation='relu'  )(s1)
+# s1= tf.keras.layers.Dense(3000, activation='relu'  )(s1)
+# s2 = tf.keras.layers.Dense(2000, activation='relu')(s1)
+# s3 = tf.keras.layers.Dense(1000, activation='relu')(s2)
+
+
+# length_layer = tf.keras.layers.Dense(256, activation='relu',name="length_layer", )(length_input)
+# length_layer = tf.keras.layers.Dropout(0)(length_layer)
+# length_layer = tf.keras.layers.Dense(120, activation='relu',name="length_layer1",)(length_layer)
+
+
+# currency_layer = tf.keras.layers.Dense(8, activation='relu',name="currency_layer")(currency_input)
+# currency_layer = tf.keras.layers.Dropout(0)(currency_layer)
+# currency_layer = tf.keras.layers.Dense(8, activation='relu',name="currency_layer1")(currency_layer)
+
+# # currency_layer = tf.keras.layers.Average(name="currency_avg")(currency_layer)
+
+# spam_word_layer = tf.keras.layers.Dense(8, activation='relu',name="spam_word_layer",)(spam_word_input)
+# spam_word_layer = tf.keras.layers.Dropout(0)(spam_word_layer)
+# spam_word_layer = tf.keras.layers.Dense(8, activation='relu',name="spam_word_layer1")(spam_word_layer)
+# # spam_word_layer = tf.keras.layers.Average(name="spamword_avg")(spam_word_layer)
+
+# emoji_layer = tf.keras.layers.Dense(8, activation='relu',name="emoji_layer", )(emoji_input)
+# emoji_layer = tf.keras.layers.Dropout(0)(emoji_layer)
+# emoji_layer = tf.keras.layers.Dense(8, activation='relu',name="emoji_layer1", )(emoji_layer)
+# # emoji_layer = tf.keras.layers.Average(name="emoji_avg")(emoji_layer)
+
+# contain_layer = tf.keras.layers.Dense(8, activation='relu',name="conatian_layer", )(contain_input)
+# contain_layer = tf.keras.layers.Dropout(0)(contain_layer)
+# contain_layer = tf.keras.layers.Dense(8, activation='relu',name="conatian_layer1", )(contain_layer)
+# # contain_layer = tf.keras.layers.Average(name="conatain_avg")(contain_layer)
+
+# email_layer = tf.keras.layers.Dense(8, activation='relu',name="email_layer", )(email_input)
+# email_layer = tf.keras.layers.Dropout(0)(email_layer)
+# email_layer = tf.keras.layers.Dense(8, activation='relu',name="email_layer1", )(email_layer)
+# # email_layer = tf.keras.layers.Average(name="email_avg")(email_layer)
+
+# phone_layer = tf.keras.layers.Dense(8, activation='relu',name="phone_layer", )(phone_input)
+# phone_layer = tf.keras.layers.Dropout(0)(phone_layer)
+# phone_layer = tf.keras.layers.Dense(8, activation='relu',name="phone_layer1", )(phone_layer)
+# # phone_layer = tf.keras.layers.Average(name="phone_avg")(phone_layer)
+
+
+# concat_layer_level1_1 = tf.keras.layers.concatenate([length_layer,currency_layer,spam_word_layer],name="SUB1")
+
+# sub1 = tf.keras.layers.Dense(300, activation='relu')(concat_layer_level1_1)
+# sub1 = tf.keras.layers.Dense(900, activation='relu' )(sub1)
+# concat_layer_level1_1_dense = tf.keras.layers.Dense(300, activation='relu' )(sub1)
+
+# concat_layer_level1_2 = tf.keras.layers.concatenate([contain_layer,emoji_layer,email_layer,phone_layer],name='sub2')
+
+# sub2 = tf.keras.layers.Dense(300, activation='relu')(concat_layer_level1_2)
+# sub2 = tf.keras.layers.Dense(900, activation='relu' )(sub2)
+# concat_layer_level1_2_dense = tf.keras.layers.Dense(300, activation='relu' )(sub2)
+
+
+
+# concat_layer_level = tf.keras.layers.concatenate([concat_layer_level1_1_dense,concat_layer_level1_2_dense])
+
+# sub_layer = tf.keras.layers.Dense(900, activation='relu',name="sub_layer")(concat_layer_level)
+# con  = tf.keras.layers.Dropout(rate=0)(sub_layer)
+
+
+# # Concatenate all input branches
+# concat_layer = tf.keras.layers.concatenate([s3,con ])
+
+# # Add dense and output layers
+# f1= tf.keras.layers.Dense(1000, activation='relu')(concat_layer)
+# f2 = tf.keras.layers.Dense(1000, activation='relu' )(f1)
+
+# f3 = tf.keras.layers.Dense(2000, activation='relu' )(f2)
+# f4 = tf.keras.layers.Dense(1000, activation='relu' )(f3)
+# f5 = tf.keras.layers.Dense(2000, activation='relu' )(f4)
+# f6 = tf.keras.layers.Dense(750, activation='relu' )(f5)
+
+# f7 = tf.keras.layers.Dense(500, activation='relu' )(f6)
+
+# dense_layer = tf.keras.layers.Dense(100, activation='relu')(f7)
+
+# output_layer = tf.keras.layers.Dense(1, activation='sigmoid',name="Spam")(dense_layer)
+
+# # Create the model
+# model = tf.keras.Model(inputs=[string_input, length_input,currency_input,spam_word_input,emoji_input,contain_input,email_input,phone_input], outputs=output_layer)
+
+# model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+# model.summary()
 
 
