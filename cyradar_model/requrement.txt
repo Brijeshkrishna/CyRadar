@@ -1,0 +1,7 @@
+tensorflow==2.12.0
+tensorflow-hub==0.13.0
+pandas==2.0.0
+scikit-learn==1.2.2
+emoji
+nltk
+wordcloud

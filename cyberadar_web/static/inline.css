@@ -1,0 +1,155 @@
+#spam-checker--input {
+    padding: 1rem;
+    width: 100%;
+    min-height: 100%;
+    transition: all 0.625s cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  #spam-checker--textarea {
+    border-color: transparent;
+    outline: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .hwt-container {
+    display: block;
+    position: relative;
+    overflow: hidden !important;
+    -webkit-text-size-adjust: none !important;
+  }
+
+  .hwt-backdrop {
+    position: absolute !important;
+    top: 0 !important;
+    right: -99px !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    padding-right: 99px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  .hwt-highlights {
+    width: auto !important;
+    height: auto !important;
+    border-color: transparent !important;
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    color: transparent !important;
+    overflow: hidden !important;
+  }
+
+  .hwt-input {
+    display: block !important;
+    position: relative !important;
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+    font: inherit;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  .hwt-content {
+    border: 1px solid;
+    background: none transparent !important;
+  }
+
+  .hwt-content mark {
+    padding: 0 !important;
+    color: inherit;
+    border-radius: 0.25rem;
+  }
+
+  .hwt-content mark.spam-category-shady {
+    background-color: #6c5e03; /* pink-300 */
+  }
+
+  .hwt-content mark.spam-category-money {
+    background-color: #6d0374; /* yellow-300 */
+  }
+
+  .hwt-content mark.spam-category-urgency {
+    background-color: #a50505; /* red-400 */
+  }
+
+  .hwt-content mark.spam-category-overpromise {
+    background-color: #1d7103; /* orange-300 */
+  }
+
+  .hwt-content mark.spam-category-unnatural {
+    background-color: #0648ad; /* grey-300 */
+  }
+
+  #spam-checker--aside li.spam-category-shady {
+    border-radius: 3;
+    border-left: 3px solid pink; /* pink-300 */
+  }
+
+  #spam-checker--aside li.spam-category-money {
+    border-radius: 3;
+    border-left: 3px solid #6a0263; /* yellow-300 */
+  }
+
+  #spam-checker--aside li.spam-category-urgency {
+    border-radius: 3;
+    border-left: 3px solid #f87171; /* red-400 */
+  }
+
+  #spam-checker--aside li.spam-category-overpromise {
+    border-radius: 3;
+    border-left: 3px solid #fdba74; /* orange-300 */
+  }
+
+  #spam-checker--aside li.spam-category-unnatural {
+    border-radius: 3;
+    border-left: 3px solid #d1d5db; /* grey-300 */
+  }
+
+  #spam-checker--aside {
+    padding: 1rem 0.5rem;
+  }
+
+  #spam-checker--aside table {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  #spam-checker--aside table td:first-child {
+    color: #64748b;
+  }
+
+  #spam-checker--aside table td:last-child {
+    text-align: right;
+    font-weight: 600;
+  }
+
+  #spam-checker--aside table td:last-child .text-poor {
+    color: #e11d48;
+  }
+
+  #spam-checker--aside table td:last-child .text-okay {
+    color: #2563eb;
+  }
+
+  #spam-checker--aside table td:last-child .text-great {
+    color: #16a34a;
+  }
+
+  #spam-checker--aside ul,
+  #spam-checker--aside ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  #spam-checker--aside li {
+    margin: 0.5rem 0;
+    padding: 0.75rem;
+    border-radius: 0.25rem;
+    background-color: #fff;
+    box-shadow: 0px 4px 24px rgba(4, 20, 58, 0.04);
+  }
+
+
