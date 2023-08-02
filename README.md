@@ -9,7 +9,7 @@ A spam detection system that uses machine learning techniques to accurately dete
  - Reduce misinformation by promptly removing spam and other dangerous content.
  - Help users feel safe on the internet by avoiding cyber threats.
 
-![flowchat](flowchat.png "Design Flowchat")
+![flowchat](cyradar_model/flowchat.png "Design Flowchat")
 
 # Conclusion
 Spam detection is a critical component of any social media platform that aims to deliver a high-quality user experience while prioritizing security and ease of use. By effectively detecting and removing spam and other dangerous content, CyRadar can significantly reduce noise and maintain a safe environment.
