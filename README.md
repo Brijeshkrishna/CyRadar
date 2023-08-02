@@ -1,4 +1,5 @@
 # Cyradar
+### (demo https://enemy7-spam-detetor.hf.space/ )
 
 A spam detection system that uses machine learning techniques to accurately detect spam on social media. CyRadar's API facilitates seamless communication with the central server, enabling efficient and precise identification of messages.
 
