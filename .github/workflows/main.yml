@@ -19,14 +19,13 @@ jobs:
         python-version: 3.9 
 
     - name: Install dependencies
-      run: pip install papermill nbconvert
-    
+      run: pip install ipython nbconvert jupyter
+      
+    - name: Converting Jupyter Notebook
+      run: jupyter nbconvert cyradar_model/spam-detection.ipynb --no-prompt --to python
+
     - name: Install dependencies from requrement file
       run: pip install -r cyradar_model/requrement.txt
-      
-    - name: Run Jupyter Notebook
-      run: papermill -k "python3.9" cyradar_model/spam-detection.ipynb output.ipynb
-    
 
-    - name: Convert to HTML (optional)
-      run: jupyter nbconvert --to html output.ipynb
+    - name: Run the Cyradar
+      run: python spam-detection.py
