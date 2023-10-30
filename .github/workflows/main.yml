@@ -28,4 +28,4 @@ jobs:
       run: pip install -r cyradar_model/requrement.txt
 
     - name: Run the Cyradar
-      run: python spam-detection.py
+      run: python cyradar_model/spam-detection.py
