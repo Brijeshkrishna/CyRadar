@@ -3,9 +3,12 @@
 [![Cyradar](https://img.shields.io/badge/demo-Cyradar-blue)](https://enemy7-spam-detetor.hf.space/)
 <p align=center>
  
-  <img src="https://github.com/Brijeshkrishna/spam-detection/blob/master/cyberadar_web/static/logo.png?raw=true" alt="logo">
+  <img src="https://github.com/Brijeshkrishna/CyRadar/assets/63464137/b269792d-231b-45c0-b4c5-fc24851c1b0f" alt="logo">
 </p>
 <br>
+
+
+
 A spam detection system that uses machine learning techniques to accurately detect spam on social media. CyRadar's API facilitates seamless communication with the central server, enabling efficient and precise identification of messages.
 
 # Objectives
