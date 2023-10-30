@@ -25,7 +25,7 @@ jobs:
       run: pip install -r cyradar_model/requrement.txt
       
     - name: Run Jupyter Notebook
-      run: papermill cyradar_model/spam-detection.ipynb output.ipynb
+      run: papermill -k "python3.9" cyradar_model/spam-detection.ipynb output.ipynb
     
 
     - name: Convert to HTML (optional)
