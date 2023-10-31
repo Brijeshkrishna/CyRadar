@@ -10,22 +10,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.9 
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
 
-    - name: Install dependencies
-      run: pip install ipython nbconvert jupyter
-      
-    - name: Converting Jupyter Notebook
-      run: jupyter nbconvert cyradar_model/spam-detection.ipynb --no-prompt --to python
+      - name: Install dependencies
+        run: pip install ipython nbconvert jupyter
 
-    - name: Install dependencies from requrement file
-      run: pip install -r cyradar_model/requrement.txt
+      - name: Converting Jupyter Notebook
+        run: jupyter nbconvert cyradar_model/spam-detection.ipynb --no-prompt --to python
 
-    - name: Run the Cyradar
-      run: python cyradar_model/spam-detection.py
+      - name: Install dependencies from requrement file
+        run: pip install -r cyradar_model/requrement.txt
+
+      - name: Run the Cyradar
+        run: python cyradar_model/spam-detection.py
