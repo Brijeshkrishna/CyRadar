@@ -31,3 +31,20 @@ jobs:
 
       - name: Run the Cyradar
         run: python cyradar_model/spam-detection.py
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: cyradar_model/cyradar.h5
+        env: GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: cyradar_model/cyradar.h5
+          asset_name: cyradar_model.h5
+          asset_content_type: application/octet-stream
+        env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
