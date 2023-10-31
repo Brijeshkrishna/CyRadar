@@ -6,3 +6,4 @@ emoji
 nltk
 wordcloud
 imblearn
+seaborn
