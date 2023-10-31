@@ -17,19 +17,21 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
-      - name: Install package
-        run: sudo apt update && sudo apt upgrade ; sudo apt install graphviz
 
       - name: Install dependencies
-        run: pip install ipython nbconvert jupyter
+        run: |
+          sudo apt update
+          sudo apt upgrade -y
+          sudo apt install -y graphviz
+          pip install ipython nbconvert jupyter
 
       - name: Converting Jupyter Notebook
-        run: jupyter nbconvert cyradar_model/spam-detection.ipynb --no-prompt --to python
+        run: jupyter nbconvert cyradar_model/spam-detection.ipynb --to python
 
-      - name: Install dependencies from requrement file
-        run: pip install -r cyradar_model/requrement.txt
+      - name: Install dependencies from requirement file
+        run: pip install -r cyradar_model/requirement.txt
 
-      - name: Run the Cyradar
+      - name: Run the CyRadar
         run: python cyradar_model/spam-detection.py
 
       - name: Create Release
@@ -37,7 +39,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: cyradar_model/cyradar.h5
-        env: GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
@@ -47,4 +50,4 @@ jobs:
           asset_name: cyradar_model.h5
           asset_content_type: application/octet-stream
         env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
