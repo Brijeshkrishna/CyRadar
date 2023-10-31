@@ -7,3 +7,4 @@ nltk
 wordcloud
 imblearn
 seaborn
+pydot
