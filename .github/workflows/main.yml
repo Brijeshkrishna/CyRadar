@@ -29,8 +29,7 @@ jobs:
         run: jupyter nbconvert cyradar_model/spam-detection.ipynb --to python
 
       - name: Install dependencies from requirement file
-        run: pip install -r cyradar_model/requirement.txt
-
+        run: pip install -r cyradar_model/requrement.txt
       - name: Run the CyRadar
         run: python cyradar_model/spam-detection.py
 
