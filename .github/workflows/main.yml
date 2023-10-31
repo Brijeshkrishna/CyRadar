@@ -18,7 +18,7 @@ jobs:
         with:
           python-version: 3.9
       - name: Install package
-        run: apt update && apt upgrade ; apt install graphviz
+        run: sudo apt update && audo apt upgrade ; sudo apt install graphviz
 
       - name: Install dependencies
         run: pip install ipython nbconvert jupyter
