@@ -2,13 +2,7 @@ name: Conventional Commits
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.head_ref || github.sha }}
-  cancel-in-progress: true
+    branches: "*"
 
 jobs:
   build:
@@ -16,5 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: webiny/action-conventional-commits@v1.1.0
