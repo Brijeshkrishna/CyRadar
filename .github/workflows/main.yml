@@ -32,6 +32,17 @@ jobs:
         run: pip install -r cyradar_model/requrement.txt
       - name: Run the CyRadar
         run: python cyradar_model/spam-detection.py
+        
+      - name: release
+        uses: actions/create-release@v1
+        id: create_release
+        with:
+          draft: false
+          prerelease: false
+          release_name: Latest Release
+          tag_name: LatestRelease
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
 
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
@@ -41,4 +52,4 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: cyradar_model/model.h5
           asset_name: cyradar-model.h5
-          asset_content_type: application/zip
+          asset_content_type: application/binary
