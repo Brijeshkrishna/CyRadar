@@ -42,7 +42,7 @@ jobs:
           release_name: Latest Release
           tag_name: LatestRelease
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
 
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
