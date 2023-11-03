@@ -1,12 +1,25 @@
+<div align="center">
+
 # Cyradar
 
+A spam detection system
+<br>
+<br>
+  [![Cyradar](https://img.shields.io/badge/demo-Cyradar-blue)](https://enemy7-spam-detetor.hf.space/)
+  [![Visitors](https://api.visitorbadge.io/api/visitors?path=Brijeshkrishna%2FCyRadar&countColor=%2337d67a&style=flat)](https://visitorbadge.io/status?path=Brijeshkrishna%2FCyRadar)
+  ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/brijeshkrishna/Cyradar/.github%2Fworkflows%2Fmain.yml)
+![GitHub](https://img.shields.io/github/license/brijeshkrishna/cyradar)
+</div>
 
-[![Cyradar](https://img.shields.io/badge/demo-Cyradar-blue)](https://enemy7-spam-detetor.hf.space/)
-[![Visitors](https://api.visitorbadge.io/api/visitors?path=Brijeshkrishna%2FCyRadar&countColor=%2337d67a&style=flat)](https://visitorbadge.io/status?path=Brijeshkrishna%2FCyRadar)
-![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/brijeshkrishna/Cyradar/.github%2Fworkflows%2Fmain.yml)
-<p align=center>
+
+
+<div align=center>
+  
+</div>
+
+<div align=center>
   <img src="https://github.com/Brijeshkrishna/CyRadar/assets/63464137/b269792d-231b-45c0-b4c5-fc24851c1b0f" alt="logo">
-</p>
+</div>
 <br>
 
 
