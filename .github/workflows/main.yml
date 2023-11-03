@@ -6,9 +6,8 @@ on:
       - '*'
 
 jobs:
-  run-jupyter-notebook:
+  build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -33,6 +32,13 @@ jobs:
       - name: Run the CyRadar
         run: python cyradar_model/spam-detection.py
         
+  release:
+    needs: build
+    permissions: write-all
+    name: Release
+    runs-on: ubuntu-latest
+
+    steps:
       - name: release
         uses: actions/create-release@v1
         id: create_release
@@ -42,14 +48,14 @@ jobs:
           release_name: Latest Release
           tag_name: LatestRelease
         env:
-          GITHUB_TOKEN: ${{ github.TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.token }}
 
-      - name: Upload Release Asset
+      - name: upload model artifact
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ github.TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.token }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: cyradar_model/model.h5
-          asset_name: cyradar-model.h5
+          asset_name: Cyradar_model.h5
           asset_content_type: application/binary
