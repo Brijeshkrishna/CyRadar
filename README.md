@@ -1,8 +1,8 @@
 # Cyradar
 
 [![Cyradar](https://img.shields.io/badge/demo-Cyradar-blue)](https://enemy7-spam-detetor.hf.space/)
+[![Visitors](https://api.visitorbadge.io/api/visitors?path=Brijeshkrishna%2FCyRadar&countColor=%2337d67a&style=flat)](https://visitorbadge.io/status?path=Brijeshkrishna%2FCyRadar)
 <p align=center>
- 
   <img src="https://github.com/Brijeshkrishna/CyRadar/assets/63464137/b269792d-231b-45c0-b4c5-fc24851c1b0f" alt="logo">
 </p>
 <br>
